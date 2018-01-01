@@ -1,0 +1,43 @@
+{
+  "name": "@tyriar/fibonacci-heap",
+  "version": "1.0.10",
+  "description": "An implementation of the Fibonacci heap data structure",
+  "scripts": {
+    "doc": "documentation-readme -s \"API\"",
+    "test": "nyc ava",
+    "watch": "tsc -w",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gwtw/js-fibonacci-heap.git"
+  },
+  "keywords": [
+    "A*",
+    "computer science",
+    "data structure",
+    "dijkstra",
+    "heap",
+    "priority queue",
+    "tree"
+  ],
+  "main": "./lib/fibonacciHeap.js",
+  "types": "typings/fibonacci-heap.d.ts",
+  "author": "Daniel Imms (http://www.growingwiththeweb.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gwtw/js-fibonacci-heap/issues"
+  },
+  "homepage": "https://github.com/gwtw/js-fibonacci-heap",
+  "devDependencies": {
+    "@tyriar/heap-tests": "^1.0.2",
+    "ava": "^0.14.0",
+    "coveralls": "^2.11.4",
+    "documentation-readme": "^2.1.0",
+    "nyc": "^3.2.2",
+    "typescript": "^2.6.2"
+  },
+  "xo": {
+    "space": 2
+  }
+}
