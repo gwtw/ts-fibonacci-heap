@@ -1,3 +1,9 @@
+/**
+ * @license
+ * Copyright Daniel Imms <http://www.growingwiththeweb.com>
+ * Released under MIT license. See LICENSE in the project root for details.
+ */
+
 import { Node } from './node';
 import { IKeyComparable } from './interfaces';
 import { NodeListIterator } from './nodeListIterator';
@@ -41,8 +47,8 @@ export class FibonacciHeap<K, V> {
     node.key = newKey;
     const parent = node.parent;
     if (parent && this.compare(node, parent) < 0) {
-      cut(node, parent, this.minNode, this.compare);
-      cascadingCut(parent, this.minNode, this.compare);
+      this.cut(node, parent, this.minNode);
+      this.cascadingCut(parent, this.minNode);
     }
     if (this.compare(node, this.minNode) < 0) {
       this.minNode = node;
@@ -59,8 +65,8 @@ export class FibonacciHeap<K, V> {
     // is no MIN_VALUE constant for generic types.
     const parent = node.parent;
     if (parent) {
-      cut(node, parent, this.minNode, this.compare);
-      cascadingCut(parent, this.minNode, this.compare);
+      this.cut(node, parent, this.minNode);
+      this.cascadingCut(parent, this.minNode);
     }
     this.minNode = node;
 
@@ -88,13 +94,13 @@ export class FibonacciHeap<K, V> {
         nextInRootList = extractedMin.next;
       }
       // Remove min from root list
-      removeNodeFromList(extractedMin);
+      this.removeNodeFromList(extractedMin);
       this.nodeCount--;
 
       // Merge the children of the minimum node with the root list
-      this.minNode = mergeLists(nextInRootList, extractedMin.child, this.compare);
+      this.minNode = this.mergeLists(nextInRootList, extractedMin.child);
       if (this.minNode) {
-        this.minNode = consolidate(this.minNode, this.compare);
+        this.minNode = this.consolidate(this.minNode);
       }
     }
     return extractedMin;
@@ -116,7 +122,7 @@ export class FibonacciHeap<K, V> {
    */
   public insert(key: K, value?: V): Node<K, V> {
     const node = new Node(key, value);
-    this.minNode = mergeLists(this.minNode, node, this.compare);
+    this.minNode = this.mergeLists(this.minNode, node);
     this.nodeCount++;
     return node;
   }
@@ -135,7 +141,7 @@ export class FibonacciHeap<K, V> {
     if (this.isEmpty()) {
       return 0;
     }
-    return getNodeListSize(this.minNode);
+    return this.getNodeListSize(this.minNode);
   }
 
   /**
@@ -143,7 +149,7 @@ export class FibonacciHeap<K, V> {
    * @param other The other heap.
    */
   public union(other: FibonacciHeap<K, V>): void {
-    this.minNode = mergeLists(this.minNode, other.minNode, this.compare);
+    this.minNode = this.mergeLists(this.minNode, other.minNode);
     this.nodeCount += other.nodeCount;
   }
 
@@ -162,174 +168,159 @@ export class FibonacciHeap<K, V> {
     }
     return 0;
   }
-}
 
-/**
- * Cut the link between a node and its parent, moving the node to the root list.
- *
- * @private
- * @param {Node} node The node being cut.
- * @param {Node} parent The parent of the node being cut.
- * @param {Node} minNode The minimum node in the root list.
- * @param {function} compare The node comparison function to use.
- * @return {Node} The heap's new minimum node.
- */
-function cut(node, parent, minNode, compare) {
-  node.parent = undefined;
-  parent.degree--;
-  if (node.next === node) {
-    parent.child = undefined;
-  } else {
-    parent.child = node.next;
-  }
-  removeNodeFromList(node);
-  minNode = mergeLists(minNode, node, compare);
-  node.isMarked = false;
-  return minNode;
-}
-
-/**
- * Perform a cascading cut on a node; mark the node if it is not marked,
- * otherwise cut the node and perform a cascading cut on its parent.
- *
- * @private
- * @param {Node} node The node being considered to be cut.
- * @param {Node} minNode The minimum node in the root list.
- * @param {function} compare The node comparison function to use.
- * @return {Node} The heap's new minimum node.
- */
-function cascadingCut(node, minNode, compare) {
-  var parent = node.parent;
-  if (parent) {
-    if (node.isMarked) {
-      minNode = cut(node, parent, minNode, compare);
-      minNode = cascadingCut(parent, minNode, compare);
+  /**
+   * Cut the link between a node and its parent, moving the node to the root list.
+   * @param node The node being cut.
+   * @param parent The parent of the node being cut.
+   * @param minNode The minimum node in the root list.
+   * @return The heap's new minimum node.
+   */
+  private cut(node: Node<K, V>, parent: Node<K, V>, minNode: Node<K, V>): Node<K, V> {
+    node.parent = undefined;
+    parent.degree--;
+    if (node.next === node) {
+      parent.child = undefined;
     } else {
-      node.isMarked = true;
+      parent.child = node.next;
     }
+    this.removeNodeFromList(node);
+    minNode = this.mergeLists(minNode, node);
+    node.isMarked = false;
+    return minNode;
   }
-  return minNode;
-}
 
-/**
- * Merge all trees of the same order together until there are no two trees of
- * the same order.
- *
- * @private
- * @param {Node} minNode The current minimum node.
- * @param {function} compare The node comparison function to use.
- * @return {Node} The new minimum node.
- */
-function consolidate<K, V>(minNode, compare) {
-  var aux = [];
-  var it = new NodeListIterator<K, V>(minNode);
-  while (it.hasNext()) {
-    var current = it.next();
-
-    // If there exists another node with the same degree, merge them
-    while (aux[current.degree]) {
-      if (compare(current, aux[current.degree]) > 0) {
-        var temp = current;
-        current = aux[current.degree];
-        aux[current.degree] = temp;
+  /**
+   * Perform a cascading cut on a node; mark the node if it is not marked,
+   * otherwise cut the node and perform a cascading cut on its parent.
+   * @param node The node being considered to be cut.
+   * @param minNode The minimum node in the root list.
+   * @return The heap's new minimum node.
+   */
+  private cascadingCut(node: Node<K, V>, minNode: Node<K, V>): Node<K, V> {
+    const parent = node.parent;
+    if (parent) {
+      if (node.isMarked) {
+        minNode = this.cut(node, parent, minNode);
+        minNode = this.cascadingCut(parent, minNode);
+      } else {
+        node.isMarked = true;
       }
-      linkHeaps(aux[current.degree], current, compare);
-      aux[current.degree] = undefined;
-      current.degree++;
+    }
+    return minNode;
+  }
+
+  /**
+   * Merge all trees of the same order together until there are no two trees of
+   * the same order.
+   * @param minNode The current minimum node.
+   * @return The new minimum node.
+   */
+  private consolidate(minNode: Node<K, V>): Node<K, V> {
+    const aux = [];
+    const it = new NodeListIterator<K, V>(minNode);
+    while (it.hasNext()) {
+      let current = it.next();
+
+      // If there exists another node with the same degree, merge them
+      while (aux[current.degree]) {
+        if (this.compare(current, aux[current.degree]) > 0) {
+          const temp = current;
+          current = aux[current.degree];
+          aux[current.degree] = temp;
+        }
+        this.linkHeaps(aux[current.degree], current);
+        aux[current.degree] = undefined;
+        current.degree++;
+      }
+
+      aux[current.degree] = current;
     }
 
-    aux[current.degree] = current;
-  }
-
-  minNode = undefined;
-  for (var i = 0; i < aux.length; i++) {
-    if (aux[i]) {
-      // Remove siblings before merging
-      aux[i].next = aux[i];
-      aux[i].prev = aux[i];
-      minNode = mergeLists(minNode, aux[i], compare);
+    minNode = undefined;
+    for (let i = 0; i < aux.length; i++) {
+      if (aux[i]) {
+        // Remove siblings before merging
+        aux[i].next = aux[i];
+        aux[i].prev = aux[i];
+        minNode = this.mergeLists(minNode, aux[i]);
+      }
     }
-  }
-  return minNode;
-}
-
-/**
- * Removes a node from a node list.
- *
- * @private
- * @param {Node} node The node to remove.
- */
-function removeNodeFromList(node) {
-  var prev = node.prev;
-  var next = node.next;
-  prev.next = next;
-  next.prev = prev;
-  node.next = node;
-  node.prev = node;
-}
-
-/**
- * Links two heaps of the same order together.
- *
- * @private
- * @param {Node} max The heap with the larger root.
- * @param {Node} min The heap with the smaller root.
- * @param {function} compare The node comparison function to use.
- */
-function linkHeaps(max, min, compare) {
-  removeNodeFromList(max);
-  min.child = mergeLists(max, min.child, compare);
-  max.parent = min;
-  max.isMarked = false;
-}
-
-/**
- * Merge two lists of nodes together.
- *
- * @private
- * @param {Node} a The first list to merge.
- * @param {Node} b The second list to merge.
- * @param {function} compare The node comparison function to use.
- * @return {Node} The new minimum node from the two lists.
- */
-function mergeLists(a, b, compare) {
-  if (!a && !b) {
-    return undefined;
-  }
-  if (!a) {
-    return b;
-  }
-  if (!b) {
-    return a;
+    return minNode;
   }
 
-  var temp = a.next;
-  a.next = b.next;
-  a.next.prev = a;
-  b.next = temp;
-  b.next.prev = b;
+  /**
+   * Removes a node from a node list.
+   * @param node The node to remove.
+   */
+  private removeNodeFromList(node: Node<K, V>): void {
+    const prev = node.prev;
+    const next = node.next;
+    prev.next = next;
+    next.prev = prev;
+    node.next = node;
+    node.prev = node;
+  }
 
-  return compare(a, b) < 0 ? a : b;
-}
+  /**
+   * Links two heaps of the same order together.
+   *
+   * @private
+   * @param max The heap with the larger root.
+   * @param min The heap with the smaller root.
+   */
+  private linkHeaps(max: Node<K, V>, min: Node<K, V>): void {
+    this.removeNodeFromList(max);
+    min.child = this.mergeLists(max, min.child);
+    max.parent = min;
+    max.isMarked = false;
+  }
 
-/**
- * Gets the size of a node list.
- *
- * @private
- * @param {Node} node A node within the node list.
- * @return {number} The size of the node list.
- */
-function getNodeListSize(node) {
-  var count = 0;
-  var current = node;
-
-  do {
-    count++;
-    if (current.child) {
-      count += getNodeListSize(current.child);
+  /**
+   * Merge two lists of nodes together.
+   *
+   * @private
+   * @param a The first list to merge.
+   * @param b The second list to merge.
+   * @return The new minimum node from the two lists.
+   */
+  private mergeLists(a: Node<K, V>, b: Node<K, V>): Node<K, V> {
+    if (!a && !b) {
+      return undefined;
     }
-    current = current.next;
-  } while (current !== node);
+    if (!a) {
+      return b;
+    }
+    if (!b) {
+      return a;
+    }
 
-  return count;
+    const temp = a.next;
+    a.next = b.next;
+    a.next.prev = a;
+    b.next = temp;
+    b.next.prev = b;
+
+    return this.compare(a, b) < 0 ? a : b;
+  }
+
+  /**
+   * Gets the size of a node list.
+   * @param node A node within the node list.
+   * @return The size of the node list.
+   */
+  private getNodeListSize(node: Node<K, V>): number {
+    let count = 0;
+    let current = node;
+
+    do {
+      count++;
+      if (current.child) {
+        count += this.getNodeListSize(current.child);
+      }
+      current = current.next;
+    } while (current !== node);
+
+    return count;
+  }
 }
