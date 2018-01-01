@@ -1,5 +1,5 @@
-import { Node } from "./node";
-import { IKeyComparable } from "./interfaces";
+import { Node } from './node';
+import { IKeyComparable } from './interfaces';
 
 export type CompareFunction<K> = (a: IKeyComparable<K>, b: IKeyComparable<K>) => number;
 
@@ -19,7 +19,7 @@ export class FibonacciHeap<K, V> {
   /**
    * Clears the heap's data, making it an empty heap.
    */
-  public clear() {
+  public clear(): void {
     this.minNode = undefined;
     this.nodeCount = 0;
   }
@@ -29,7 +29,7 @@ export class FibonacciHeap<K, V> {
    * @param node The node to decrease the key of.
    * @param newKey The new key to assign to the node.
    */
-  public decreaseKey(node: Node<K, V>, newKey: K) {
+  public decreaseKey(node: Node<K, V>, newKey: K): void {
     if (!node) {
       throw new Error('Cannot decrease key of non-existent node');
     }
@@ -38,7 +38,7 @@ export class FibonacciHeap<K, V> {
     }
 
     node.key = newKey;
-    var parent = node.parent;
+    const parent = node.parent;
     if (parent && this.compare(node, parent) < 0) {
       cut(node, parent, this.minNode, this.compare);
       cascadingCut(parent, this.minNode, this.compare);
@@ -52,11 +52,11 @@ export class FibonacciHeap<K, V> {
    * Deletes a node.
    * @param node The node to delete.
    */
-  public delete(node: Node<K, V>) {
+  public delete(node: Node<K, V>): void {
     // This is a special implementation of decreaseKey that sets the argument to
     // the minimum value. This is necessary to make generic keys work, since there
     // is no MIN_VALUE constant for generic types.
-    var parent = node.parent;
+    const parent = node.parent;
     if (parent) {
       cut(node, parent, this.minNode, this.compare);
       cascadingCut(parent, this.minNode, this.compare);
@@ -70,19 +70,19 @@ export class FibonacciHeap<K, V> {
    * Extracts and returns the minimum node from the heap.
    * @return The heap's minimum node or undefined if the heap is empty.
    */
-  public extractMinimum() {
-    var extractedMin = this.minNode;
+  public extractMinimum(): Node<K, V> {
+    const extractedMin = this.minNode;
     if (extractedMin) {
       // Set parent to undefined for the minimum's children
       if (extractedMin.child) {
-        var child = extractedMin.child;
+        let child = extractedMin.child;
         do {
           child.parent = undefined;
           child = child.next;
         } while (child !== extractedMin.child);
       }
 
-      var nextInRootList;
+      let nextInRootList;
       if (extractedMin.next !== extractedMin) {
         nextInRootList = extractedMin.next;
       }
@@ -103,7 +103,7 @@ export class FibonacciHeap<K, V> {
    * Returns the minimum node from the heap.
    * @return The heap's minimum node or undefined if the heap is empty.
    */
-  public findMinimum() {
+  public findMinimum(): Node<K, V> {
     return this.minNode;
   }
 
@@ -113,8 +113,8 @@ export class FibonacciHeap<K, V> {
    * @param value The value to insert.
    * @return node The inserted node.
    */
-  public insert(key: K, value?: V) {
-    var node = new Node(key, value);
+  public insert(key: K, value?: V): Node<K, V> {
+    const node = new Node(key, value);
     this.minNode = mergeLists(this.minNode, node, this.compare);
     this.nodeCount++;
     return node;
@@ -123,14 +123,14 @@ export class FibonacciHeap<K, V> {
   /**
    * @return Whether the heap is empty.
    */
-  public isEmpty() {
+  public isEmpty(): boolean {
     return this.minNode === undefined;
   }
 
   /**
    * @return The size of the heap.
    */
-  public size() {
+  public size(): number {
     if (this.isEmpty()) {
       return 0;
     }
@@ -141,7 +141,7 @@ export class FibonacciHeap<K, V> {
    * Joins another heap to this heap.
    * @param other The other heap.
    */
-  public union(other: FibonacciHeap<K, V>) {
+  public union(other: FibonacciHeap<K, V>): void {
     this.minNode = mergeLists(this.minNode, other.minNode, this.compare);
     this.nodeCount += other.nodeCount;
   }
@@ -160,7 +160,7 @@ export class FibonacciHeap<K, V> {
       return -1;
     }
     return 0;
-  };
+  }
 }
 
 
