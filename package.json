@@ -3,6 +3,7 @@
   "version": "1.0.10",
   "description": "An implementation of the Fibonacci heap data structure",
   "scripts": {
+    "build": "tsc",
     "lint": "tslint src/**/*.ts",
     "test": "nyc ava",
     "watch": "tsc -w",
