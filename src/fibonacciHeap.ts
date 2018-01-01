@@ -1,5 +1,6 @@
 import { Node } from './node';
 import { IKeyComparable } from './interfaces';
+import { NodeListIterator } from './nodeListIterator';
 
 export type CompareFunction<K> = (a: IKeyComparable<K>, b: IKeyComparable<K>) => number;
 
@@ -163,40 +164,6 @@ export class FibonacciHeap<K, V> {
   }
 }
 
-
-
-/**
- * Creates an Iterator used to simplify the consolidate() method. It works by
- * making a shallow copy of the nodes in the root list and iterating over the
- * shallow copy instead of the source as the source will be modified.
- *
- * @private
- * @param {Node} start A node from the root list.
- */
-var NodeListIterator = function (start) {
-  this.index = -1;
-  this.items = [];
-  var current = start;
-  do {
-    this.items.push(current);
-    current = current.next;
-  } while (start !== current);
-};
-
-/**
- * @return {boolean} Whether there is a next node in the iterator.
- */
-NodeListIterator.prototype.hasNext = function () {
-  return this.index < this.items.length - 1;
-};
-
-/**
- * @return {Node} The next node.
- */
-NodeListIterator.prototype.next = function () {
-  return this.items[++this.index];
-};
-
 /**
  * Cut the link between a node and its parent, moving the node to the root list.
  *
@@ -253,9 +220,9 @@ function cascadingCut(node, minNode, compare) {
  * @param {function} compare The node comparison function to use.
  * @return {Node} The new minimum node.
  */
-function consolidate(minNode, compare) {
+function consolidate<K, V>(minNode, compare) {
   var aux = [];
-  var it = new NodeListIterator(minNode);
+  var it = new NodeListIterator<K, V>(minNode);
   while (it.hasNext()) {
     var current = it.next();
 
