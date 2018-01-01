@@ -31,9 +31,9 @@
   "homepage": "https://github.com/gwtw/js-fibonacci-heap",
   "devDependencies": {
     "@tyriar/heap-tests": "^1.0.2",
-    "ava": "^0.14.0",
-    "coveralls": "^2.11.4",
-    "nyc": "^3.2.2",
+    "ava": "^0.24.0",
+    "coveralls": "^3.0.0",
+    "nyc": "^11.4.1",
     "tslint": "^5.8.0",
     "typescript": "^2.6.2"
   },
