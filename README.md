@@ -16,8 +16,6 @@ A TypeScript implementation of the [Fibonacci heap](http://www.growingwiththeweb
 
 ## Install
 
-TODO: Publish over js-fibonacci-heap
-
 ```bash
 npm install --save @tyriar/fibonacci-heap
 ```
