@@ -7,3 +7,8 @@
 export interface IKeyComparable<K> {
   key: K;
 }
+
+export interface INode<K, V> {
+  key: K;
+  value: V;
+}
