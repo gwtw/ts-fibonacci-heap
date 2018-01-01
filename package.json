@@ -7,7 +7,8 @@
     "lint": "tslint src/**/*.ts",
     "test": "nyc ava",
     "watch": "tsc -w",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
