@@ -9,6 +9,10 @@ import { CompareFunction } from "../src/fibonacciHeap";
 
 declare module '@tyriar/fibonacci-heap' {
   export class FibonacciHeap<K, V> {
+    /**
+     * Creates a new FibonacciHeap data structure.
+     * @param compare A custom compare function.
+     */
     constructor(compare?: CompareFunction<K>);
 
     /**
