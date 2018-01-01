@@ -1,9 +1,9 @@
-# js-fibonacci-heap
+# ts-fibonacci-heap
 
-[![Build Status](https://api.travis-ci.org/gwtw/js-fibonacci-heap.svg?branch=master)](http://travis-ci.org/gwtw/js-fibonacci-heap)
-[![Coverage Status](https://coveralls.io/repos/github/gwtw/js-fibonacci-heap/badge.svg?branch=master)](https://coveralls.io/github/gwtw/js-fibonacci-heap?branch=master)
+[![Build Status](https://api.travis-ci.org/gwtw/ts-fibonacci-heap.svg?branch=master)](http://travis-ci.org/gwtw/ts-fibonacci-heap)
+[![Coverage Status](https://coveralls.io/repos/github/gwtw/ts-fibonacci-heap/badge.svg?branch=master)](https://coveralls.io/github/gwtw/ts-fibonacci-heap?branch=master)
 
-A JavaScript implementation of the [Fibonacci heap](http://www.growingwiththeweb.com/data-structures/fibonacci-heap/overview/) data structure.
+A TypeScript implementation of the [Fibonacci heap](http://www.growingwiththeweb.com/data-structures/fibonacci-heap/overview/) data structure.
 
 ![](http://www.growingwiththeweb.com/images/data-structures/fibonacci-heap/fibonacci-heap.svg)
 
@@ -16,15 +16,19 @@ A JavaScript implementation of the [Fibonacci heap](http://www.growingwiththeweb
 
 ## Install
 
+TODO: Publish over js-fibonacci-heap
+
 ```bash
 npm install --save @tyriar/fibonacci-heap
 ```
 
 ## Usage
 
-```javascript
+See the [typings file](./typings/fibonacci-heap.d.ts) for API information:
+
+```typescript
 // Import npm module
-var FibonacciHeap = require('@tyriar/fibonacci-heap');
+import { FibonacciHeap } from '@tyriar/fibonacci-heap';
 
 // Construct FibonacciHeap
 var heap = new FibonacciHeap();
@@ -80,77 +84,3 @@ while (!heap.isEmpty()) {
 | union          | Θ(1)       |
 
 \* amortized
-
-## API
-
-### FibonacciHeap
-
-Creates a Fibonacci heap.
-
-**Parameters**
-
--   `customCompare` **function** An optional custom node comparison
-    function.
-
-#### clear
-
-Clears the heap's data, making it an empty heap.
-
-#### decreaseKey
-
-Decreases a key of a node.
-
-**Parameters**
-
--   `node` **Node** The node to decrease the key of.
--   `newKey` **Object** The new key to assign to the node.
-
-#### delete
-
-Deletes a node.
-
-**Parameters**
-
--   `node` **Node** The node to delete.
-
-#### extractMinimum
-
-Extracts and returns the minimum node from the heap.
-
-Returns **Node** node The heap's minimum node or undefined if the heap is
-empty.
-
-#### findMinimum
-
-Returns the minimum node from the heap.
-
-Returns **Node** node The heap's minimum node or undefined if the heap is
-empty.
-
-#### insert
-
-Inserts a new key-value pair into the heap.
-
-**Parameters**
-
--   `key` **Object** The key to insert.
--   `value` **Object** The value to insert.
-
-Returns **Node** node The inserted node.
-
-#### isEmpty
-
-Returns **boolean** Whether the heap is empty.
-
-#### size
-
-Returns **number** The size of the heap.
-
-#### union
-
-Joins another heap to this heap.
-
-**Parameters**
-
--   `otherHeap` **BinaryHeap** The other heap.
--   `other`
