@@ -15,7 +15,7 @@ export class FibonacciHeap<K, V> {
   private _nodeCount: number = 0;
 
   constructor(
-    private _compare: CompareFunction<K>
+    private _compare?: CompareFunction<K>
   ) {
     if (!_compare) {
       this._compare = this._defaultCompare;

@@ -8,9 +8,12 @@ import { IKeyComparable, INode } from "../src/interfaces";
 import { CompareFunction } from "../src/fibonacciHeap";
 
 declare module '@tyriar/fibonacci-heap' {
+  /**
+   * A Fibonacci heap data structure with a key and optional value.
+   */
   export class FibonacciHeap<K, V> {
     /**
-     * Creates a new FibonacciHeap data structure.
+     * Creates a new Fibonacci heap.
      * @param compare A custom compare function.
      */
     constructor(compare?: CompareFunction<K>);
