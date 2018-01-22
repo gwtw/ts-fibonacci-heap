@@ -22,7 +22,7 @@ npm install --save @tyriar/fibonacci-heap
 
 ## Usage
 
-See the [typings file](./typings/fibonacci-heap.d.ts) for the full API:
+See the [typings file](./typings/fibonacci-heap.d.ts) for the full API.
 
 ```typescript
 // Import npm module
