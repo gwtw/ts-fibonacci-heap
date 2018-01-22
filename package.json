@@ -44,8 +44,8 @@
     "lib/*.js.map",
     "lib/**/*.js",
     "lib/**/*.js.map",
-    "src/*.js",
-    "src/**/*.js",
+    "src/*.ts",
+    "src/**/*.ts",
     "typings/*.d.ts"
   ]
 }
