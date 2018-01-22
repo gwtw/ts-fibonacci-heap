@@ -29,7 +29,7 @@ See the [typings file](./typings/fibonacci-heap.d.ts) for the full API:
 import { FibonacciHeap } from '@tyriar/fibonacci-heap';
 
 // Construct FibonacciHeap
-var heap = new FibonacciHeap();
+const heap = new FibonacciHeap();
 // Insert keys only
 heap.insert(3);
 heap.insert(7);
@@ -39,7 +39,7 @@ heap.insert(1, {foo: 'baz'});
 
 // Extract all nodes in order
 while (!heap.isEmpty()) {
-  var node = heap.extractMinimum();
+  const node = heap.extractMinimum();
   console.log('key: ' + node.key + ', value: ' + node.value);
 }
 // > key: 1, value: [object Object]
@@ -58,7 +58,7 @@ heap.insert('2', 'b');
 
 // Extract all nodes in order
 while (!heap.isEmpty()) {
-  var node = heap.extractMinimum();
+  const node = heap.extractMinimum();
   console.log('key: ' + node.key + ', value: ' + node.value);
 }
 // > key: 1, value: a
