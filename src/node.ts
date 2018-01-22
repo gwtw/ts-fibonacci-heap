@@ -4,9 +4,9 @@
  * Released under MIT license. See LICENSE in the project root for details.
  */
 
-import { IKeyComparable, INode } from './interfaces';
+import { INode } from './interfaces';
 
-export class Node<K, V> implements INode<K, V>, IKeyComparable<K> {
+export class Node<K, V> implements INode<K, V> {
   public key: K;
   public value: V;
   public prev: Node<K, V>;

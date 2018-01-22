@@ -5,17 +5,17 @@
  */
 
 import { Node } from './node';
-import { IKeyComparable } from './interfaces';
+import { INode } from './interfaces';
 import { NodeListIterator } from './nodeListIterator';
 
-export type CompareFunction<K> = (a: IKeyComparable<K>, b: IKeyComparable<K>) => number;
+export type CompareFunction<K, V> = (a: INode<K, V>, b: INode<K, V>) => number;
 
 export class FibonacciHeap<K, V> {
   private _minNode: Node<K, V>;
   private _nodeCount: number = 0;
 
   constructor(
-    private _compare?: CompareFunction<K>
+    private _compare?: CompareFunction<K, V>
   ) {
     if (!_compare) {
       this._compare = this._defaultCompare;
@@ -158,7 +158,7 @@ export class FibonacciHeap<K, V> {
    * @param b The second key to compare.
    * @return -1, 0 or 1 if a < b, a == b or a > b respectively.
    */
-  private _defaultCompare(a: IKeyComparable<K>, b: IKeyComparable<K>): number {
+  private _defaultCompare(a: INode<K, V>, b: INode<K, V>): number {
     if (a.key > b.key) {
       return 1;
     }

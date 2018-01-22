@@ -4,7 +4,7 @@
  * Released under MIT license. See LICENSE in the project root for details.
  */
 
-import { IKeyComparable, INode } from "../src/interfaces";
+import { INode } from "../src/interfaces";
 import { CompareFunction } from "../src/fibonacciHeap";
 
 declare module '@tyriar/fibonacci-heap' {
@@ -16,7 +16,7 @@ declare module '@tyriar/fibonacci-heap' {
      * Creates a new Fibonacci heap.
      * @param compare A custom compare function.
      */
-    constructor(compare?: CompareFunction<K>);
+    constructor(compare?: CompareFunction<K, V>);
 
     /**
      * Clears the heap's data, making it an empty heap.
