@@ -1,8 +1,7 @@
 sudo: false
 language: node_js
 node_js:
-  - '4'
-  - '8'
+  - 'stable'
 before_script:
   npm run build
 after_success: npm run coveralls
