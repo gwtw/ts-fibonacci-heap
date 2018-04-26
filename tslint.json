@@ -93,7 +93,10 @@
 
     "naming-convention": [
       true,
-      {"type": "property", "modifiers": ["public", "static", "const"], "format": "UPPER_CASE"}
+      {"type": "property", "modifiers": ["public", "static", "const"], "format": "lower"},
+      {"type": "property", "modifiers": ["private"], "format": "camelCase", "leadingUnderscore": "require"},
+      {"type": "property", "modifiers": ["protected"], "format": "camelCase", "leadingUnderscore": "require"},
+      {"type": "variable", "modifiers": ["local"], "format": "camelCase"}
     ],
     "no-else-after-return": {
       "options": "allow-else-if"
