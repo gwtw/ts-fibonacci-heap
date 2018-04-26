@@ -4,7 +4,12 @@
     "target": "es5",
     "rootDir": "src",
     "outDir": "lib",
-    "sourceMap": true
+    "sourceMap": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true
   },
   "exclude": [
     "node_modules",
