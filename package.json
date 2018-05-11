@@ -4,7 +4,7 @@
   "description": "An implementation of the Fibonacci heap data structure",
   "scripts": {
     "build": "tsc",
-    "lint": "tslint src/**/*.ts",
+    "lint": "tslint 'src/**/*.ts'",
     "test": "nyc ava",
     "watch": "tsc -w",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
