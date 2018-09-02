@@ -8,8 +8,7 @@
     "alwaysStrict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true
+    "strictFunctionTypes": true
   },
   "exclude": [
     "node_modules",
