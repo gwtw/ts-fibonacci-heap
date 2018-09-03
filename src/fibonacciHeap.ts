@@ -5,28 +5,25 @@
  */
 
 import { Node } from './node';
-import { INode } from './interfaces';
 import { NodeListIterator } from './nodeListIterator';
+import { FibonacciHeap as FibonacciHeapApi, CompareFunction, INode } from '@tyriar/fibonacci-heap';
 
-export type CompareFunction<K, V> = (a: INode<K, V>, b: INode<K, V>) => number;
-
-export class FibonacciHeap<K, V> {
-  private _minNode: Node<K, V>;
+export class FibonacciHeap<K, V> implements FibonacciHeapApi<K, V> {
+  private _minNode: Node<K, V> | null = null;
   private _nodeCount: number = 0;
+  private _compare: CompareFunction<K, V>;
 
   constructor(
-    private _compare?: CompareFunction<K, V>
+    compare?: CompareFunction<K, V>
   ) {
-    if (!_compare) {
-      this._compare = this._defaultCompare;
-    }
+    this._compare = compare ? compare : this._defaultCompare;
   }
 
   /**
    * Clears the heap's data, making it an empty heap.
    */
   public clear(): void {
-    this._minNode = undefined;
+    this._minNode = null;
     this._nodeCount = 0;
   }
 
@@ -46,10 +43,10 @@ export class FibonacciHeap<K, V> {
     node.key = newKey;
     const parent = node.parent;
     if (parent && this._compare(node, parent) < 0) {
-      this._cut(node, parent, this._minNode);
-      this._cascadingCut(parent, this._minNode);
+      this._cut(node, parent, <Node<K, V>>this._minNode);
+      this._cascadingCut(parent, <Node<K, V>>this._minNode);
     }
-    if (this._compare(node, this._minNode) < 0) {
+    if (this._compare(node, <Node<K, V>>this._minNode) < 0) {
       this._minNode = node;
     }
   }
@@ -64,8 +61,8 @@ export class FibonacciHeap<K, V> {
     // is no MIN_VALUE constant for generic types.
     const parent = node.parent;
     if (parent) {
-      this._cut(node, parent, this._minNode);
-      this._cascadingCut(parent, this._minNode);
+      this._cut(node, parent, <Node<K, V>>this._minNode);
+      this._cascadingCut(parent, <Node<K, V>>this._minNode);
     }
     this._minNode = node;
 
@@ -74,21 +71,21 @@ export class FibonacciHeap<K, V> {
 
   /**
    * Extracts and returns the minimum node from the heap.
-   * @return The heap's minimum node or undefined if the heap is empty.
+   * @return The heap's minimum node or null if the heap is empty.
    */
-  public extractMinimum(): Node<K, V> {
+  public extractMinimum(): Node<K, V> | null {
     const extractedMin = this._minNode;
     if (extractedMin) {
-      // Set parent to undefined for the minimum's children
+      // Set parent to null for the minimum's children
       if (extractedMin.child) {
         let child = extractedMin.child;
         do {
-          child.parent = undefined;
+          child.parent = null;
           child = child.next;
         } while (child !== extractedMin.child);
       }
 
-      let nextInRootList;
+      let nextInRootList = null;
       if (extractedMin.next !== extractedMin) {
         nextInRootList = extractedMin.next;
       }
@@ -107,9 +104,9 @@ export class FibonacciHeap<K, V> {
 
   /**
    * Returns the minimum node from the heap.
-   * @return The heap's minimum node or undefined if the heap is empty.
+   * @return The heap's minimum node or null if the heap is empty.
    */
-  public findMinimum(): Node<K, V> {
+  public findMinimum(): Node<K, V> | null {
     return this._minNode;
   }
 
@@ -130,14 +127,14 @@ export class FibonacciHeap<K, V> {
    * @return Whether the heap is empty.
    */
   public isEmpty(): boolean {
-    return this._minNode === undefined;
+    return this._minNode === null;
   }
 
   /**
    * @return The size of the heap.
    */
   public size(): number {
-    if (this.isEmpty()) {
+    if (this._minNode === null) {
       return 0;
     }
     return this._getNodeListSize(this._minNode);
@@ -175,18 +172,18 @@ export class FibonacciHeap<K, V> {
    * @param minNode The minimum node in the root list.
    * @return The heap's new minimum node.
    */
-  private _cut(node: Node<K, V>, parent: Node<K, V>, minNode: Node<K, V>): Node<K, V> {
-    node.parent = undefined;
+  private _cut(node: Node<K, V>, parent: Node<K, V>, minNode: Node<K, V>): Node<K, V> | null {
+    node.parent = null;
     parent.degree--;
     if (node.next === node) {
-      parent.child = undefined;
+      parent.child = null;
     } else {
       parent.child = node.next;
     }
     this._removeNodeFromList(node);
-    minNode = this._mergeLists(minNode, node);
+    const newMinNode = this._mergeLists(minNode, node);
     node.isMarked = false;
-    return minNode;
+    return newMinNode;
   }
 
   /**
@@ -196,11 +193,11 @@ export class FibonacciHeap<K, V> {
    * @param minNode The minimum node in the root list.
    * @return The heap's new minimum node.
    */
-  private _cascadingCut(node: Node<K, V>, minNode: Node<K, V>): Node<K, V> {
+  private _cascadingCut(node: Node<K, V>, minNode: Node<K, V> | null): Node<K, V> | null {
     const parent = node.parent;
     if (parent) {
       if (node.isMarked) {
-        minNode = this._cut(node, parent, minNode);
+        minNode = this._cut(node, parent, <Node<K, V>>minNode);
         minNode = this._cascadingCut(parent, minNode);
       } else {
         node.isMarked = true;
@@ -215,37 +212,41 @@ export class FibonacciHeap<K, V> {
    * @param minNode The current minimum node.
    * @return The new minimum node.
    */
-  private _consolidate(minNode: Node<K, V>): Node<K, V> {
+  private _consolidate(minNode: Node<K, V>): Node<K, V> | null {
+
     const aux = [];
     const it = new NodeListIterator<K, V>(minNode);
     while (it.hasNext()) {
       let current = it.next();
 
       // If there exists another node with the same degree, merge them
-      while (aux[current.degree]) {
-        if (this._compare(current, aux[current.degree]) > 0) {
+      let auxCurrent = aux[current.degree];
+      while (auxCurrent) {
+        if (this._compare(current, auxCurrent) > 0) {
           const temp = current;
-          current = aux[current.degree];
-          aux[current.degree] = temp;
+          current = auxCurrent;
+          auxCurrent = temp;
         }
-        this._linkHeaps(aux[current.degree], current);
-        aux[current.degree] = undefined;
+        this._linkHeaps(auxCurrent, current);
+        aux[current.degree] = null;
         current.degree++;
+        auxCurrent = aux[current.degree];
       }
 
       aux[current.degree] = current;
     }
 
-    minNode = undefined;
+    let newMinNode = null;
     for (let i = 0; i < aux.length; i++) {
-      if (aux[i]) {
+      const node = aux[i];
+      if (node) {
         // Remove siblings before merging
-        aux[i].next = aux[i];
-        aux[i].prev = aux[i];
-        minNode = this._mergeLists(minNode, aux[i]);
+        node.next = node;
+        node.prev = node;
+        newMinNode = this._mergeLists(newMinNode, node);
       }
     }
-    return minNode;
+    return newMinNode;
   }
 
   /**
@@ -283,11 +284,11 @@ export class FibonacciHeap<K, V> {
    * @param b The second list to merge.
    * @return The new minimum node from the two lists.
    */
-  private _mergeLists(a: Node<K, V>, b: Node<K, V>): Node<K, V> {
-    if (!a && !b) {
-      return undefined;
-    }
+  private _mergeLists(a: Node<K, V> | null, b: Node<K, V> | null): Node<K, V> | null {
     if (!a) {
+      if (!b) {
+        return null;
+      }
       return b;
     }
     if (!b) {

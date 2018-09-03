@@ -4,10 +4,14 @@
  * Released under MIT license. See LICENSE in the project root for details.
  */
 
-import { INode } from "../src/interfaces";
-import { CompareFunction } from "../src/fibonacciHeap";
-
 declare module '@tyriar/fibonacci-heap' {
+  export type CompareFunction<K, V> = (a: INode<K, V>, b: INode<K, V>) => number;
+
+  export interface INode<K, V> {
+    key: K;
+    value?: V;
+  }
+
   /**
    * A Fibonacci heap data structure with a key and optional value.
    */
@@ -38,15 +42,15 @@ declare module '@tyriar/fibonacci-heap' {
 
     /**
      * Extracts and returns the minimum node from the heap.
-     * @return The heap's minimum node or undefined if the heap is empty.
+     * @return The heap's minimum node or null if the heap is empty.
      */
-    extractMinimum(): INode<K, V>;
+    extractMinimum(): INode<K, V> | null;
 
     /**
      * Returns the minimum node from the heap.
-     * @return The heap's minimum node or undefined if the heap is empty.
+     * @return The heap's minimum node or null if the heap is empty.
      */
-    findMinimum(): INode<K, V>;
+    findMinimum(): INode<K, V> | null;
 
     /**
      * Inserts a new key-value pair into the heap.

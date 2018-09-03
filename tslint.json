@@ -31,6 +31,7 @@
       "parameter"
     ],
     "eofline": true,
+    "new-parens": true,
     "no-duplicate-imports": true,
     "no-eval": true,
     "no-internal-module": true,
@@ -38,6 +39,7 @@
     "one-variable-per-declaration": true,
     "no-unsafe-finally": true,
     "no-var-keyword": true,
+    "prefer-const": true,
     "quotemark": [
       true,
       "single"
@@ -58,10 +60,7 @@
         "esSpecCompliant": true
       }
     ],
-    "triple-equals": [
-      true,
-      "allow-null-check"
-    ],
+    "triple-equals": true,
     "typedef-whitespace": [
       true,
       {
