@@ -4,10 +4,14 @@
  * Released under MIT license. See LICENSE in the project root for details.
  */
 
-import { INode } from "../src/interfaces";
-import { CompareFunction } from "../src/fibonacciHeap";
-
 declare module '@tyriar/fibonacci-heap' {
+  export type CompareFunction<K, V> = (a: INode<K, V>, b: INode<K, V>) => number;
+
+  export interface INode<K, V> {
+    key: K;
+    value?: V;
+  }
+
   /**
    * A Fibonacci heap data structure with a key and optional value.
    */

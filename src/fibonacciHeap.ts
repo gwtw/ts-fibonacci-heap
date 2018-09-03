@@ -5,10 +5,8 @@
  */
 
 import { Node } from './node';
-import { INode } from './interfaces';
 import { NodeListIterator } from './nodeListIterator';
-
-export type CompareFunction<K, V> = (a: INode<K, V>, b: INode<K, V>) => number;
+import { CompareFunction, INode } from '@tyriar/fibonacci-heap';
 
 export class FibonacciHeap<K, V> {
   private _minNode: Node<K, V>;

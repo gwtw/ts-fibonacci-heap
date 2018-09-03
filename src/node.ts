@@ -4,7 +4,7 @@
  * Released under MIT license. See LICENSE in the project root for details.
  */
 
-import { INode } from './interfaces';
+import { INode } from '@tyriar/fibonacci-heap';
 
 export class Node<K, V> implements INode<K, V> {
   public key: K;
