@@ -42,15 +42,15 @@ declare module '@tyriar/fibonacci-heap' {
 
     /**
      * Extracts and returns the minimum node from the heap.
-     * @return The heap's minimum node or undefined if the heap is empty.
+     * @return The heap's minimum node or null if the heap is empty.
      */
-    extractMinimum(): INode<K, V>;
+    extractMinimum(): INode<K, V> | null;
 
     /**
      * Returns the minimum node from the heap.
-     * @return The heap's minimum node or undefined if the heap is empty.
+     * @return The heap's minimum node or null if the heap is empty.
      */
-    findMinimum(): INode<K, V>;
+    findMinimum(): INode<K, V> | null;
 
     /**
      * Inserts a new key-value pair into the heap.

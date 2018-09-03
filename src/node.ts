@@ -8,11 +8,11 @@ import { INode } from '@tyriar/fibonacci-heap';
 
 export class Node<K, V> implements INode<K, V> {
   public key: K;
-  public value: V;
+  public value: V | undefined;
   public prev: Node<K, V>;
   public next: Node<K, V>;
-  public parent: Node<K, V>;
-  public child: Node<K, V>;
+  public parent: Node<K, V> | null = null;
+  public child: Node<K, V> | null = null;
 
   public degree: number = 0;
   public isMarked: boolean = false;

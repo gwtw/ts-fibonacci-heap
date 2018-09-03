@@ -15,12 +15,12 @@ test('should consolidate 8 nodes into a well formed order 1 tree', function (t) 
   //
   t.is(heap.extractMinimum(), node0);
   t.is(heap.size(), 2);
-  t.true(node1.parent === undefined);
+  t.true(node1.parent === null);
   t.true(node2.parent === node1);
   t.true(node1.next === node1);
   t.true(node2.next === node2);
   t.true(node1.child === node2);
-  t.true(node2.child === undefined);
+  t.true(node2.child === null);
 });
 
 test('should consolidate 8 nodes into a well formed order 2 tree', function (t) {
@@ -41,7 +41,7 @@ test('should consolidate 8 nodes into a well formed order 2 tree', function (t) 
   //
   t.is(heap.extractMinimum(), node0);
   t.is(heap.size(), 4);
-  t.true(node1.parent === undefined);
+  t.true(node1.parent === null);
   t.true(node2.parent === node1);
   t.true(node3.parent === node1);
   t.true(node4.parent === node3);
@@ -50,9 +50,9 @@ test('should consolidate 8 nodes into a well formed order 2 tree', function (t) 
   t.true(node3.next === node2);
   t.true(node4.next === node4);
   t.true(node1.child === node2);
-  t.true(node2.child === undefined);
+  t.true(node2.child === null);
   t.true(node3.child === node4);
-  t.true(node4.child === undefined);
+  t.true(node4.child === null);
 });
 
 test('should consolidate 8 nodes into a well formed order 3 tree', function (t) {
@@ -78,7 +78,7 @@ test('should consolidate 8 nodes into a well formed order 3 tree', function (t) 
   //                             8
   //
   t.is(heap.extractMinimum(), node0);
-  t.true(node1.parent === undefined);
+  t.true(node1.parent === null);
   t.true(node2.parent === node1);
   t.true(node3.parent === node1);
   t.true(node4.parent === node3);
@@ -95,13 +95,13 @@ test('should consolidate 8 nodes into a well formed order 3 tree', function (t) 
   t.true(node7.next === node6);
   t.true(node8.next === node8);
   t.true(node1.child === node2);
-  t.true(node2.child === undefined);
+  t.true(node2.child === null);
   t.true(node3.child === node4);
-  t.true(node4.child === undefined);
+  t.true(node4.child === null);
   t.true(node5.child === node6);
-  t.true(node6.child === undefined);
+  t.true(node6.child === null);
   t.true(node7.child === node8);
-  t.true(node8.child === undefined);
+  t.true(node8.child === null);
 });
 
 test('should consolidate after extract min is called on a tree with a single tree in the root node list', function (t) {

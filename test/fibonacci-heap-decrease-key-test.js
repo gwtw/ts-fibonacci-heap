@@ -96,6 +96,6 @@ test('should delete the node\'s parent reference after a cut', function (t) {
   //
   heap.decreaseKey(node3, 1);
 
-  // Ensure 1's parent is undefined (the link to 2 has been cut)
-  t.is(node3.parent, undefined);
+  // Ensure 1's parent is null (the link to 2 has been cut)
+  t.is(node3.parent, null);
 });
