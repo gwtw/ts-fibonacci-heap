@@ -6,8 +6,8 @@
     "build": "tsc",
     "lint": "tslint --project .",
     "test": "nyc -x lib/test mocha lib/test/*.test.js",
+    "test-report": "nyc --reporter html mocha lib/test/*.test.js",
     "watch": "tsc -w",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "prepublish": "npm run build"
   },
   "repository": {
