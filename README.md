@@ -5,6 +5,8 @@
 
 A TypeScript implementation of the [Fibonacci heap](http://www.growingwiththeweb.com/data-structures/fibonacci-heap/overview/) data structure.
 
+Note that the primary purpose of this library is education but it should work in a production environment as well. It's certainly not as performant as it could be as it optimises for readability, abstraction and safety over raw performance.
+
 ![](http://www.growingwiththeweb.com/images/data-structures/fibonacci-heap/fibonacci-heap.svg)
 
 ## Features
