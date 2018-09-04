@@ -1,6 +1,6 @@
 {
   "name": "@tyriar/fibonacci-heap",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "An implementation of the Fibonacci heap data structure",
   "scripts": {
     "build": "tsc",
