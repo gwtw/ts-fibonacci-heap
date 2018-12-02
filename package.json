@@ -43,12 +43,11 @@
     "typescript": "^3.0.3"
   },
   "files": [
-    "lib/*.js",
-    "lib/*.js.map",
     "lib/**/*.js",
     "lib/**/*.js.map",
-    "src/*.ts",
+    "!lib/test",
     "src/**/*.ts",
+    "!src/test",
     "typings/*.d.ts"
   ]
 }
