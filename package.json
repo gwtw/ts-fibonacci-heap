@@ -40,7 +40,7 @@
     "nyc": "^11.4.1",
     "tslint": "^5.9.1",
     "tslint-consistent-codestyle": "^1.13.0",
-    "typescript": "^3.0.3"
+    "typescript": "3.2"
   },
   "files": [
     "lib/**/*.js",
