@@ -1,6 +1,6 @@
 # ts-fibonacci-heap
 
-[![Build Status](https://api.travis-ci.org/gwtw/ts-fibonacci-heap.svg?branch=master)](http://travis-ci.org/gwtw/ts-fibonacci-heap)
+[![Build Status](https://dev.azure.com/growingwiththeweb/ts-fibonacci-heap/_apis/build/status/gwtw.ts-fibonacci-heap?branchName=master)](https://dev.azure.com/growingwiththeweb/ts-fibonacci-heap/_build/latest?definitionId=1&branchName=master)
 [![Coverage Status](https://coveralls.io/repos/github/gwtw/ts-fibonacci-heap/badge.svg?branch=master)](https://coveralls.io/github/gwtw/ts-fibonacci-heap?branch=master)
 
 A TypeScript implementation of the [Fibonacci heap](http://www.growingwiththeweb.com/data-structures/fibonacci-heap/overview/) data structure.
