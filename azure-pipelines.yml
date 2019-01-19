@@ -27,5 +27,5 @@ steps:
 - script: npm run lint
   displayName: 'Lint'
 
-- script: nyc report --reporter=text-lcov | coveralls
+- script: ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls
   displayName: 'Public coverage'
